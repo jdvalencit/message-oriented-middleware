@@ -1,0 +1,17 @@
+syntax = "proto3";
+package protomom;
+
+service Crud {
+    rpc CreateQueue (CreateRequest) returns (CreateReply);
+    //rpc ReadQueue (HelloRequest) returns (HelloReply);
+    //rpc UpdateQueue (HelloRequest) returns (HelloReply);
+    //rpc DeleteQueue (HelloRequest) returns (HelloReply);
+}
+
+message CreateRequest {
+   string name = 1;
+}
+
+message CreateReply {
+    string message = 1;
+}
