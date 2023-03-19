@@ -12,7 +12,7 @@ pub async fn grpc_create(req_name: String) -> String {
         .await
         .expect("Error conecting client");
     let request = tonic::Request::new(CreateRequest {
-        name: req_name.into(),
+        name: req_name,
     });
 
     //Returns response from server
@@ -28,7 +28,7 @@ pub async fn grpc_read(req_id: String) -> String {
     let mut client = CrudClient::connect("http://[::1]:50051")
         .await
         .expect("Error conecting client");
-    let request = tonic::Request::new(ReadRequest { id: req_id.into() });
+    let request = tonic::Request::new(ReadRequest { id: req_id });
 
     //Returns response from server
     client
@@ -43,7 +43,7 @@ pub async fn grpc_update(req_id: String) -> String {
     let mut client = CrudClient::connect("http://[::1]:50051")
         .await
         .expect("Error conecting client");
-    let request = tonic::Request::new(UpdateRequest { id: req_id.into() });
+    let request = tonic::Request::new(UpdateRequest { id: req_id });
 
     //Returns response from server
     client
@@ -58,7 +58,7 @@ pub async fn grpc_delete(req_id: String) -> String {
     let mut client = CrudClient::connect("http://[::1]:50051")
         .await
         .expect("Error conecting client");
-    let request = tonic::Request::new(DeleteRequest { id: req_id.into() });
+    let request = tonic::Request::new(DeleteRequest { id: req_id });
 
     //Returns response from server
     client
@@ -74,8 +74,8 @@ pub async fn grpc_put(req_id: String, cont: String) -> String {
         .await
         .expect("Error conecting client");
     let request = tonic::Request::new(PutRequest {
-        id: req_id.into(),
-        content: cont.into(),
+        id: req_id,
+        content: cont,
     });
 
     //Returns response from server
@@ -91,7 +91,7 @@ pub async fn grpc_get(req_id: String) -> String {
     let mut client = CrudClient::connect("http://[::1]:50051")
         .await
         .expect("Error conecting client");
-    let request = tonic::Request::new(GetRequest { id: req_id.into() });
+    let request = tonic::Request::new(GetRequest { id: req_id });
 
     //Returns response from server
     client

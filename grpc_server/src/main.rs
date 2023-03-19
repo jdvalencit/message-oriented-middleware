@@ -22,7 +22,7 @@ impl Crud for CreateQueue {
         println!("Request from client: {:?}", request);
 
         let reply = protomom::CreateReply {
-            message: format!("Queue: {} was created.", request.into_inner().name).into(),
+            message: format!("Queue: {} was created.", request.into_inner().name),
         };
 
         Ok(Response::new(reply))
@@ -35,7 +35,7 @@ impl Crud for CreateQueue {
         println!("Request from client: {:?}", request);
 
         let reply = protomom::ReadReply {
-            message: format!("Queue: {} was read.", request.into_inner().id).into(),
+            message: format!("Queue: {} was read.", request.into_inner().id),
         };
 
         Ok(Response::new(reply))
@@ -48,7 +48,7 @@ impl Crud for CreateQueue {
         println!("Request from client: {:?}", request);
 
         let reply = protomom::UpdateReply {
-            message: format!("Queue: {} was updated.", request.into_inner().id).into(),
+            message: format!("Queue: {} was updated.", request.into_inner().id),
         };
 
         Ok(Response::new(reply))
@@ -61,7 +61,7 @@ impl Crud for CreateQueue {
         println!("Request from client: {:?}", request);
 
         let reply = protomom::DeleteReply {
-            message: format!("Queue: {} was deleted.", request.into_inner().id).into(),
+            message: format!("Queue: {} was deleted.", request.into_inner().id),
         };
 
         Ok(Response::new(reply))
@@ -72,7 +72,7 @@ impl Crud for CreateQueue {
         let req = request.into_inner();
 
         let reply = protomom::PutReply {
-            message: format!("Message {} was added to queue {}.", req.content, req.id).into(),
+            message: format!("Message {} was added to queue {}.", req.content, req.id),
         };
 
         Ok(Response::new(reply))
@@ -82,7 +82,7 @@ impl Crud for CreateQueue {
         println!("Request from client: {:?}", request);
 
         let reply = protomom::GetReply {
-            message: format!("Queue: {} was returned.", request.into_inner().id).into(),
+            message: format!("Queue: {} was returned.", request.into_inner().id),
         };
 
         Ok(Response::new(reply))
