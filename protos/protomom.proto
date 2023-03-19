@@ -3,15 +3,61 @@ package protomom;
 
 service Crud {
     rpc CreateQueue (CreateRequest) returns (CreateReply);
-    //rpc ReadQueue (HelloRequest) returns (HelloReply);
-    //rpc UpdateQueue (HelloRequest) returns (HelloReply);
-    //rpc DeleteQueue (HelloRequest) returns (HelloReply);
+    rpc ReadQueue (ReadRequest) returns (ReadReply);
+    rpc UpdateQueue (UpdateRequest) returns (UpdateReply);
+    rpc DeleteQueue (DeleteRequest) returns (DeleteReply);
+    rpc PutQueue (PutRequest) returns (PutReply);
+    rpc GetQueue (GetRequest) returns (GetReply);
 }
 
+//Crud
 message CreateRequest {
    string name = 1;
 }
 
 message CreateReply {
+    string message = 1;
+}
+
+message ReadRequest {
+   string id = 1;
+}
+
+message ReadReply {
+    string message = 1;
+}
+
+message UpdateRequest {
+   string id = 1;
+}
+
+message UpdateReply {
+    string message = 1;
+}
+
+message DeleteRequest {
+   string id = 1;
+}
+
+message DeleteReply {
+    string message = 1;
+}
+
+//Put/Get
+
+message PutRequest {
+   string id = 1;
+   string content = 2;
+}
+
+message PutReply {
+    string message = 1;
+}
+
+message GetRequest {
+   string id = 1;
+}
+
+message GetReply {
     string message = 1;
 }

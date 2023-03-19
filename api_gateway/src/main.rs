@@ -1,5 +1,8 @@
-#[macro_use] extern crate rocket;
-use api_gateway::grpc_client::grpc_client::grpc;
+#[macro_use]
+extern crate rocket;
+use api_gateway::grpc_client::grpc_client::{
+    grpc_create, grpc_delete, grpc_get, grpc_put, grpc_read, grpc_update,
+};
 
 #[get("/")]
 fn index() -> &'static str {
@@ -8,40 +11,47 @@ fn index() -> &'static str {
 
 #[get("/create_queue/<name>")]
 async fn create_queue(name: String) -> String {
-    grpc(name.clone()).await;
-    format!("Queue: {} was created.",name)
+    grpc_create(name.clone()).await;
+    format!("Queue: {} was created.", name)
 }
 
 #[get("/read_queue/<id_queue>")]
-fn read_queue(id_queue: String) -> String {
-    format!("Queue: {} was returned.",id_queue)
+async fn read_queue(id_queue: String) -> String {
+    grpc_read(id_queue.clone()).await;
+    format!("Queue: {} was read.", id_queue)
 }
 
 #[get("/update_queue/<id_queue>")]
-fn update_queue(id_queue: String) -> String {
-    format!("Queue: {} was updated.",id_queue)
+async fn update_queue(id_queue: String) -> String {
+    grpc_update(id_queue.clone()).await;
+    format!("Queue: {} was updated.", id_queue)
 }
 
 #[get("/delete_queue/<id_queue>")]
-fn delete_queue(id_queue: String) -> String {
-    format!("Queue: {} was deleted.",id_queue)
+async fn delete_queue(id_queue: String) -> String {
+    grpc_delete(id_queue.clone()).await;
+    format!("Queue: {} was deleted.", id_queue)
 }
 
+#[get("/put/<id_queue>/<content>")]
+async fn put(id_queue: String, content: String) -> String {
+    grpc_put(id_queue.clone(), content.clone()).await;
+    format!("Message {} was added to queue {}.", content, id_queue)
+}
 
-#[get("/write/<id_queue>/<msg>")]
-fn write(id_queue: String,msg: String) -> String {
-    format!("Message {} was added to queue {}.",msg,id_queue)
-}   
-
-#[get("/read/<id_queue>")]
-fn read(id_queue: String) -> String {
-    format!("Queue {} was read.",id_queue)
+#[get("/get/<id_queue>")]
+async fn get(id_queue: String) -> String {
+    grpc_get(id_queue.clone()).await;
+    format!("Queue {} was returned.", id_queue)
 }
 
 #[launch]
 fn rocket() -> _ {
     rocket::build()
         .mount("/", routes![index])
-        .mount("/crud", routes![create_queue,read_queue,update_queue,delete_queue])
-        .mount("/queue", routes![write,read])
+        .mount(
+            "/crud",
+            routes![create_queue, read_queue, update_queue, delete_queue],
+        )
+        .mount("/queue", routes![put, get])
 }
