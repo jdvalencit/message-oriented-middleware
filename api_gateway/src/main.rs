@@ -11,38 +11,32 @@ fn index() -> &'static str {
 
 #[get("/create_queue/<name>")]
 async fn create_queue(name: String) -> String {
-    grpc_create(name.clone()).await;
-    format!("Queue: {} was created.", name)
+    grpc_create(name).await
 }
 
 #[get("/read_queue/<id_queue>")]
 async fn read_queue(id_queue: String) -> String {
-    grpc_read(id_queue.clone()).await;
-    format!("Queue: {} was read.", id_queue)
+    grpc_read(id_queue.clone()).await
 }
 
 #[get("/update_queue/<id_queue>")]
 async fn update_queue(id_queue: String) -> String {
-    grpc_update(id_queue.clone()).await;
-    format!("Queue: {} was updated.", id_queue)
+    grpc_update(id_queue.clone()).await
 }
 
 #[get("/delete_queue/<id_queue>")]
 async fn delete_queue(id_queue: String) -> String {
-    grpc_delete(id_queue.clone()).await;
-    format!("Queue: {} was deleted.", id_queue)
+    grpc_delete(id_queue.clone()).await
 }
 
 #[get("/put/<id_queue>/<content>")]
 async fn put(id_queue: String, content: String) -> String {
-    grpc_put(id_queue.clone(), content.clone()).await;
-    format!("Message {} was added to queue {}.", content, id_queue)
+    grpc_put(id_queue.clone(), content.clone()).await
 }
 
 #[get("/get/<id_queue>")]
 async fn get(id_queue: String) -> String {
-    grpc_get(id_queue.clone()).await;
-    format!("Queue {} was returned.", id_queue)
+    grpc_get(id_queue.clone()).await
 }
 
 #[launch]
