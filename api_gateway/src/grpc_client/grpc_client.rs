@@ -1,6 +1,6 @@
 use protomom::crud_client::CrudClient;
 use protomom::{
-    CreateRequest, DeleteRequest, GetRequest, PutRequest, ReadRequest, UpdateRequest,
+    CreateRequest, DeleteRequest, GetRequest, PutRequest, ReadRequest
 };
 
 pub mod protomom {
@@ -33,21 +33,6 @@ pub async fn grpc_read(req_id: String) -> String {
     //Returns response from server
     client
         .read_queue(request)
-        .await
-        .expect("Error receiving a response from server")
-        .into_inner()
-        .message
-}
-
-pub async fn grpc_update(req_id: String) -> String {
-    let mut client = CrudClient::connect("http://[::1]:50051")
-        .await
-        .expect("Error conecting client");
-    let request = tonic::Request::new(UpdateRequest { id: req_id });
-
-    //Returns response from server
-    client
-        .update_queue(request)
         .await
         .expect("Error receiving a response from server")
         .into_inner()
