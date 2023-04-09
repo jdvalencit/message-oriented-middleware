@@ -1,7 +1,7 @@
 #[macro_use]
 extern crate rocket;
 use api_gateway::grpc_client::grpc_client::{
-    grpc_create, grpc_delete, grpc_get, grpc_put, grpc_read
+    grpc_create, grpc_delete, grpc_get, grpc_put, grpc_read,
 };
 
 #[get("/")]
@@ -38,9 +38,6 @@ async fn get(id_queue: String) -> String {
 fn rocket() -> _ {
     rocket::build()
         .mount("/", routes![index])
-        .mount(
-            "/crud",
-            routes![create_queue, read_queue, delete_queue],
-        )
+        .mount("/crud", routes![create_queue, read_queue, delete_queue])
         .mount("/queue", routes![put, get])
 }

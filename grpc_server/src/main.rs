@@ -36,6 +36,7 @@ impl Crud for CreateQueue {
         if local_queues_ref.contains_key(&name) {
             let reply = protomom::CreateReply {
                 message: format!("Error queue: {} was already created.", name),
+                status: false,
             };
             return Ok(Response::new(reply));
         }
@@ -46,6 +47,7 @@ impl Crud for CreateQueue {
 
         let reply = protomom::CreateReply {
             message: format!("Queue: {} was created.", name),
+            status: true,
         };
 
         Ok(Response::new(reply))
@@ -86,6 +88,7 @@ impl Crud for CreateQueue {
         if let Some(_queue) = local_queues_ref.remove(&id) {
             let reply = protomom::DeleteReply {
                 message: format!("Queue: {} was deleted.", id),
+                status: true,
             };
 
             return Ok(Response::new(reply));
@@ -93,6 +96,7 @@ impl Crud for CreateQueue {
 
         let reply = protomom::DeleteReply {
             message: format!("Queue: {} not found.", id),
+            status: false,
         };
 
         Ok(Response::new(reply))
