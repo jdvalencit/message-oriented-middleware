@@ -38,7 +38,7 @@ async fn delete_queue(id_queue: String, auth: BasicAuth) -> String {
     grpc_delete(id_queue.clone(), user, pass).await
 }
 
-#[put("/put/<id_queue>/<content>")]
+#[put("/put/<id_queue>", format = "text/html", data = "<content>") ]
 async fn put(id_queue: String, content: String) -> String {
     grpc_put(id_queue.clone(), content.clone()).await
 }
