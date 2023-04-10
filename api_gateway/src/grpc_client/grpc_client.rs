@@ -1,7 +1,8 @@
 use futures::future::join_all;
 use lazy_static::lazy_static;
 use protomom::{
-    crud_client::CrudClient, CreateRequest, DeleteRequest, GetRequest, PutRequest, ReadRequest,
+    crud_client::CrudClient, user_client::UserClient, CreateRequest, CreateUserRequest,
+    DeleteRequest, GetRequest, PutRequest, ReadRequest,
 };
 use std::{collections::HashMap, env, iter::Cycle, sync::RwLock, vec::IntoIter};
 
@@ -142,7 +143,7 @@ pub async fn grpc_get() -> String {
     results.into_iter().fold(String::new(), |acc, s| acc + &s)
 }
 
-async fn get( mom_ip: String) -> String {
+async fn get(mom_ip: String) -> String {
     let mut client = CrudClient::connect(mom_ip.clone())
         .await
         .expect("Error connecting client");
@@ -151,6 +152,24 @@ async fn get( mom_ip: String) -> String {
     // Returns response from server
     client
         .get_queues(request)
+        .await
+        .expect("Error receiving a response from server")
+        .into_inner()
+        .message
+}
+
+pub async fn grpc_create_user(req_user: String, req_password: String) -> String {
+    let mut client = UserClient::connect("http://[::1]:50051".to_string())
+        .await
+        .expect("Error connecting client");
+    let request = tonic::Request::new(CreateUserRequest {
+        user: req_user.clone(),
+        password: req_password.clone(),
+    });
+
+    // Returns response from server
+    client
+        .create_user(request)
         .await
         .expect("Error receiving a response from server")
         .into_inner()

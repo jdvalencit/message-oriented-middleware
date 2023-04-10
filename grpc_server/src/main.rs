@@ -152,6 +152,7 @@ impl Crud for CrudServicer {
     }
 }
 
+#[derive(Debug, Default)]
 pub struct UserServicer {}
 
 #[tonic::async_trait]
@@ -165,6 +166,7 @@ impl User for UserServicer {
 
         let reply = protomom::CreateUserReply  {
             message: format!("{:?}", response),
+            status: true,
         };
 
         Ok(Response::new(reply))
@@ -177,10 +179,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let addr = "[::1]:50051".parse()?;
     let crud_servicer = CrudServicer::default();
+    let user_servicer = UserServicer::default();
 
 
     Server::builder()
         .add_service(CrudServer::new(crud_servicer))
+        .add_service(UserServer::new(user_servicer))
         .serve(addr)
         .await?;
 

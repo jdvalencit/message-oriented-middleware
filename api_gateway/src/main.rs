@@ -4,7 +4,7 @@ use rocket_basicauth::BasicAuth;
 #[macro_use]
 extern crate rocket;
 use api_gateway::grpc_client::grpc_client::{
-    grpc_create, grpc_delete, grpc_get, grpc_put, grpc_read,
+    grpc_create, grpc_delete, grpc_get, grpc_put, grpc_read, grpc_create_user
 };
 
 #[get("/")]
@@ -14,17 +14,16 @@ fn index() -> &'static str {
 
 #[post("/register-user")]
 async fn register_user(auth: BasicAuth) -> String {
-    println!("{:?}", auth.username);
-    println!("{:?}", auth.password);
-    "Fake".to_string()
-}
-
-
-#[post("/create-queue/<name>")]
-async fn create_queue(name: String, auth: BasicAuth) -> String {
     let user = auth.username.to_string();
     let pass = auth.password.to_string();
-    grpc_create(name, user, pass).await
+    grpc_create_user(user, pass).await
+}
+
+#[post("/create-queue/<id_queue>")]
+async fn create_queue(id_queue: String, auth: BasicAuth) -> String {
+    let user = auth.username.to_string();
+    let pass = auth.password.to_string();
+    grpc_create(id_queue, user, pass).await
 }
 
 #[get("/read-queue/<id_queue>")]

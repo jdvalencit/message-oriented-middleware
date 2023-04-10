@@ -21,6 +21,7 @@ message CreateUserRequest {
 
 message CreateUserReply {
     string message = 1;
+    bool status = 2;
 }
 
 //Crud
