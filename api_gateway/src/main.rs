@@ -22,7 +22,9 @@ async fn register_user(auth: BasicAuth) -> String {
 
 #[post("/create-queue/<name>")]
 async fn create_queue(name: String, auth: BasicAuth) -> String {
-    grpc_create(name).await
+    let user = auth.username.to_string();
+    let pass = auth.password.to_string();
+    grpc_create(name, user, pass).await
 }
 
 #[get("/read-queue/<id_queue>")]
@@ -32,7 +34,9 @@ async fn read_queue(id_queue: String) -> String {
 
 #[delete("/delete-queue/<id_queue>")]
 async fn delete_queue(id_queue: String, auth: BasicAuth) -> String {
-    grpc_delete(id_queue.clone()).await
+    let user = auth.username.to_string();
+    let pass = auth.password.to_string();
+    grpc_delete(id_queue.clone(), user, pass).await
 }
 
 #[put("/put/<id_queue>/<content>")]
@@ -42,7 +46,7 @@ async fn put(id_queue: String, content: String) -> String {
 
 #[get("/get-queues")]
 async fn get() -> String {
-    grpc_get("fake".to_string()).await
+    grpc_get().await
 }
 
 #[launch]

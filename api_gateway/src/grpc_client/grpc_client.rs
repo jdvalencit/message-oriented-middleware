@@ -3,9 +3,7 @@ use lazy_static::lazy_static;
 use protomom::{
     crud_client::CrudClient, CreateRequest, DeleteRequest, GetRequest, PutRequest, ReadRequest,
 };
-use std::{
-    collections::HashMap, env, iter::Cycle, sync::RwLock, vec::IntoIter
-};
+use std::{collections::HashMap, env, iter::Cycle, sync::RwLock, vec::IntoIter};
 
 pub mod protomom {
     tonic::include_proto!("protomom");
@@ -22,7 +20,7 @@ lazy_static! {
     static ref QUEUE_MAPPING: RwLock<HashMap<String, String>> = RwLock::new(HashMap::new());
 }
 
-pub async fn grpc_create(req_name: String) -> String {
+pub async fn grpc_create(req_name: String, req_user: String, req_password: String) -> String {
     if QUEUE_MAPPING
         .write()
         .expect("Error accesing queue mapping")
@@ -41,7 +39,9 @@ pub async fn grpc_create(req_name: String) -> String {
         .await
         .expect("Error conecting client");
     let request = tonic::Request::new(CreateRequest {
-        name: req_name.clone(),
+        id: req_name.clone(),
+        user: req_user.clone(),
+        password: req_password.clone(),
     });
 
     //Returns response from server
@@ -80,7 +80,7 @@ pub async fn grpc_read(req_id: String) -> String {
         .message
 }
 
-pub async fn grpc_delete(req_id: String) -> String {
+pub async fn grpc_delete(req_id: String, req_user: String, req_password: String) -> String {
     let mom_ip = QUEUE_MAPPING
         .read()
         .expect("Error accesing server ips")
@@ -90,7 +90,11 @@ pub async fn grpc_delete(req_id: String) -> String {
     let mut client = CrudClient::connect(mom_ip)
         .await
         .expect("Error conecting client");
-    let request = tonic::Request::new(DeleteRequest { id: req_id.clone() });
+    let request = tonic::Request::new(DeleteRequest {
+        id: req_id.clone(),
+        user: req_user.clone(),
+        password: req_password.clone(),
+    });
 
     //Returns response from server
     let response = client
@@ -132,21 +136,21 @@ pub async fn grpc_put(req_id: String, cont: String) -> String {
         .message
 }
 
-pub async fn grpc_get(req_id: String) -> String {
-    let futures = IP_VECTOR.iter().map(|s| get(req_id.clone(), s.clone()));
+pub async fn grpc_get() -> String {
+    let futures = IP_VECTOR.iter().map(|s| get(s.clone()));
     let results = join_all(futures).await;
     results.into_iter().fold(String::new(), |acc, s| acc + &s)
 }
 
-async fn get(req_id: String, mom_ip: String) -> String {
+async fn get( mom_ip: String) -> String {
     let mut client = CrudClient::connect(mom_ip.clone())
         .await
         .expect("Error connecting client");
-    let request = tonic::Request::new(GetRequest { id: req_id });
+    let request = tonic::Request::new(GetRequest {});
 
     // Returns response from server
     client
-        .get_queue(request)
+        .get_queues(request)
         .await
         .expect("Error receiving a response from server")
         .into_inner()
