@@ -9,6 +9,12 @@ use tonic::{
     transport::Server, Request, Response, Status,
 };
 use lazy_static::lazy_static;
+use uuid::Uuid;
+use dotenv::dotenv;
+
+mod crud;
+use crud::user::{insert_user, get_user};
+
 mod queue;
 use queue::Queue;
 
@@ -17,14 +23,15 @@ pub mod protomom {
 }
 
 #[derive(Debug, Default)]
-pub struct CreateQueue {}
+
+pub struct CrudServicer {}
 
 lazy_static! {
     static ref LOCAL_QUEUES: RwLock<HashMap<String, Queue>> = RwLock::new(HashMap::new());
 }
 
 #[tonic::async_trait]
-impl Crud for CreateQueue {
+impl Crud for CrudServicer {
     async fn create_queue(
         &self,
         request: Request<CreateRequest>,
@@ -58,6 +65,9 @@ impl Crud for CreateQueue {
         &self,
         request: Request<ReadRequest>,
     ) -> Result<Response<ReadReply>, Status> {
+        let users = get_user("Tomas".to_string(), "password".to_string()).await.unwrap();
+        println!("current users: {:?}", users);
+
         println!("Request from client: {:?}", request);
         let id = request.into_inner().id;
 
@@ -83,6 +93,9 @@ impl Crud for CreateQueue {
         request: Request<DeleteRequest>,
     ) -> Result<Response<DeleteReply>, Status> {
         println!("Request from client: {:?}", request);
+        let users = get_user("Tomas".to_string(), "password".to_string()).await.unwrap();
+        println!("current users: {:?}", users);
+
         let id = request.into_inner().id;
         let mut local_queues_ref = LOCAL_QUEUES.write().expect("Error accesing local queues");
 
@@ -140,11 +153,16 @@ impl Crud for CreateQueue {
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    dotenv().ok();
+
     let addr = "[::1]:50051".parse()?;
-    let create_queue = CreateQueue::default();
+    let crud_servicer = CrudServicer::default();
+
+    // let id = Uuid::new_v4();
+    // let users = insert_user(id, "Tomas".to_string(), "password".to_string()).await?;
 
     Server::builder()
-        .add_service(CrudServer::new(create_queue))
+        .add_service(CrudServer::new(crud_servicer))
         .serve(addr)
         .await?;
 
