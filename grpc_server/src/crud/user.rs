@@ -22,8 +22,7 @@ pub async fn insert_user(id: Uuid, username: String, password: String) -> Result
         password
     )
     .execute(&pool)
-    .await
-    .unwrap();
+    .await?;
 
 
     Ok(())
@@ -36,7 +35,7 @@ pub async fn get_user(username: String, password: String) -> Result<Vec<User>, s
         "select * from users where username = $1 and password = $2",
         username,
         password
-    ).fetch_all(&pool).await.unwrap();
+    ).fetch_all(&pool).await?;
 
     Ok(users)
 }

@@ -1,20 +1,17 @@
-use protomom::{
-    crud_server::{Crud, CrudServer}, CreateReply, CreateRequest, DeleteReply, DeleteRequest, GetReply, GetRequest, PutReply,
-    user_server::{User, UserServer}, CreateUserReply, CreateUserRequest,
-    PutRequest, ReadReply, ReadRequest,
-};
-use std::{
-    collections::HashMap, sync::RwLock, 
-};
-use tonic::{
-    transport::Server, Request, Response, Status,
-};
-use lazy_static::lazy_static;
-use uuid::Uuid;
 use dotenv::dotenv;
+use lazy_static::lazy_static;
+use protomom::{
+    crud_server::{Crud, CrudServer},
+    user_server::{User, UserServer},
+    CreateReply, CreateRequest, CreateUserReply, CreateUserRequest, DeleteReply, DeleteRequest,
+    GetReply, GetRequest, PutReply, PutRequest, ReadReply, ReadRequest,
+};
+use std::{collections::HashMap, sync::RwLock};
+use tonic::{transport::Server, Request, Response, Status};
+use uuid::Uuid;
 
 mod crud;
-use crud::user::{insert_user, get_user};
+use crud::user::{get_user, insert_user};
 
 mod queue;
 use queue::Queue;
@@ -113,6 +110,13 @@ impl Crud for CrudServicer {
         request: Request<DeleteRequest>,
     ) -> Result<Response<DeleteReply>, Status> {
         println!("Request from client: {:?}", request);
+<<<<<<< HEAD
+=======
+        let users = get_user("Tomas".to_string(), "password".to_string())
+            .await
+            .unwrap();
+        println!("current users: {:?}", users);
+>>>>>>> 8e79ba7 (Implement insert user functionality)
 
         let req = request.into_inner();
 
@@ -207,19 +211,47 @@ pub struct UserServicer {}
 
 #[tonic::async_trait]
 impl User for UserServicer {
-    async fn create_user(&self, request: Request<CreateUserRequest>) -> Result<Response<CreateUserReply>, Status> {
+    async fn create_user(
+        &self,
+        request: Request<CreateUserRequest>,
+    ) -> Result<Response<CreateUserReply>, Status> {
         println!("Request from client: {:?}", request);
+<<<<<<< HEAD
         
         let id = Uuid::new_v4();
         let users = insert_user(id, "Tomas".to_string(), "password".to_string()).await.unwrap();
         let response = "Sucess";
+=======
+        let req = request.into_inner();
+>>>>>>> 8e79ba7 (Implement insert user functionality)
 
-        let reply = protomom::CreateUserReply  {
-            message: format!("{:?}", response),
-            status: true,
-        };
+        let req_user = req.user.clone();
+        let req_password = req.password.clone();
 
-        Ok(Response::new(reply))
+        let uid = Uuid::new_v4();
+
+        match insert_user(uid, req_user, req_password).await {
+            Ok(_user) => {
+                let response = "Sucess";
+
+                let reply = protomom::CreateUserReply {
+                    message: format!("{:?}", response),
+                    status: true,
+                };
+
+                return Ok(Response::new(reply));
+            }
+            Err(_) => {
+                let response = "Internal error, user already exists";
+
+                let reply = protomom::CreateUserReply {
+                    message: format!("{:?}", response),
+                    status: false,
+                };
+
+                return Ok(Response::new(reply));
+            }
+        }
     }
 }
 
