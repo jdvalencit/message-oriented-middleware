@@ -4,7 +4,7 @@ use rocket_basicauth::BasicAuth;
 #[macro_use]
 extern crate rocket;
 use api_gateway::grpc_client::grpc_client::{
-    grpc_create, grpc_delete, grpc_get, grpc_put, grpc_read, grpc_create_user
+    grpc_create, grpc_create_user, grpc_delete, grpc_get, grpc_put, grpc_read,
 };
 
 #[get("/")]

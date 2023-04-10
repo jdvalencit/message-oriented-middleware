@@ -110,13 +110,6 @@ impl Crud for CrudServicer {
         request: Request<DeleteRequest>,
     ) -> Result<Response<DeleteReply>, Status> {
         println!("Request from client: {:?}", request);
-<<<<<<< HEAD
-=======
-        let users = get_user("Tomas".to_string(), "password".to_string())
-            .await
-            .unwrap();
-        println!("current users: {:?}", users);
->>>>>>> 8e79ba7 (Implement insert user functionality)
 
         let req = request.into_inner();
 
@@ -216,14 +209,8 @@ impl User for UserServicer {
         request: Request<CreateUserRequest>,
     ) -> Result<Response<CreateUserReply>, Status> {
         println!("Request from client: {:?}", request);
-<<<<<<< HEAD
         
-        let id = Uuid::new_v4();
-        let users = insert_user(id, "Tomas".to_string(), "password".to_string()).await.unwrap();
-        let response = "Sucess";
-=======
         let req = request.into_inner();
->>>>>>> 8e79ba7 (Implement insert user functionality)
 
         let req_user = req.user.clone();
         let req_password = req.password.clone();
