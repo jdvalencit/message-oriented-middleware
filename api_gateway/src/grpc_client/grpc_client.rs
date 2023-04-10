@@ -4,7 +4,7 @@ use protomom::{
     crud_client::CrudClient, user_client::UserClient, CreateRequest, CreateUserRequest,
     DeleteRequest, GetRequest, PutRequest, ReadRequest,
 };
-use std::{collections::HashMap, env, iter::Cycle, sync::RwLock, vec::IntoIter};
+use std::{collections::HashMap, env, iter::Cycle, sync::RwLock, vec::IntoIter, fmt::format};
 
 pub mod protomom {
     tonic::include_proto!("protomom");
@@ -51,6 +51,7 @@ pub async fn grpc_create(req_name: String, req_user: String, req_password: Strin
         .await
         .expect("Error receiving a response from server")
         .into_inner();
+    println!("req name: {} ip: {}",req_name.clone(), server_ip.clone());
     if response.status {
         QUEUE_MAPPING
             .write()
@@ -82,11 +83,51 @@ pub async fn grpc_read(req_id: String) -> String {
 }
 
 pub async fn grpc_delete(req_id: String, req_user: String, req_password: String) -> String {
+    /*
+    let mom_ip = QUEUE_MAPPING
+        .read()
+        .expect("Error accesing server ips")
+        .get(&req_id);
+    /*match QUEUE_MAPPING
+        .read()
+        .expect("Error accesing server ips")
+        .get(&req_id){*/
+    
+    match mom_ip.cloned(){
+        Some(mom_ip) => {
+            let ip = mom_ip.clone();
+            let mut client = CrudClient::connect(ip)
+                .await
+                .expect("Error conecting client");
+            let request = tonic::Request::new(DeleteRequest {
+                id: req_id.clone(),
+                user: req_user.clone(),
+                password: req_password.clone(),
+            });
+
+            //Returns response from server
+            let response = client
+                .delete_queue(request)
+                .await
+                .expect("Error receiving a response from server")
+                .into_inner();
+
+            if response.status {
+                QUEUE_MAPPING
+                    .write()
+                    .expect("Error accesing queue mapping")
+                    .remove(&req_id);
+            }
+            response.message
+
+        }
+        None => {return format!("Queue not found.");}
+    }*/
     let mom_ip = QUEUE_MAPPING
         .read()
         .expect("Error accesing server ips")
         .get(&req_id)
-        .expect("Error getting server ip")
+        .unwrap_or(&"http://[::1]:50051".to_string())
         .clone();
     let mut client = CrudClient::connect(mom_ip)
         .await
