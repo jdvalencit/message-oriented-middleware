@@ -1,3 +1,4 @@
+use dotenv::dotenv;
 #[macro_use]
 extern crate rocket;
 use api_gateway::grpc_client::grpc_client::{
@@ -36,6 +37,7 @@ async fn get(id_queue: String) -> String {
 
 #[launch]
 fn rocket() -> _ {
+    dotenv().ok();
     rocket::build()
         .mount("/", routes![index])
         .mount("/crud", routes![create_queue, read_queue, delete_queue])

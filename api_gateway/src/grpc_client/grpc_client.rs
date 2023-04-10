@@ -1,21 +1,22 @@
 use futures::future::join_all;
 use lazy_static::lazy_static;
-use protomom::crud_client::CrudClient;
-use protomom::{CreateRequest, DeleteRequest, GetRequest, PutRequest, ReadRequest};
-use std::collections::HashMap;
-use std::iter::Cycle;
-use std::sync::RwLock;
-use std::vec::IntoIter;
+use protomom::{
+    crud_client::CrudClient, CreateRequest, DeleteRequest, GetRequest, PutRequest, ReadRequest,
+};
+use std::{
+    collections::HashMap, env, iter::Cycle, sync::RwLock, vec::IntoIter
+};
 
 pub mod protomom {
     tonic::include_proto!("protomom");
 }
 
 lazy_static! {
-    static ref IP_VECTOR: Vec<String> = vec![
-        String::from("http://[::1]:50051"),
-        String::from("http://[::1]:50052")
-    ];
+    static ref IP_VECTOR: Vec<String> = env::var("SERVER_IPS")
+        .unwrap_or_else(|_| "http://[::1]:50051".to_string())
+        .split(',')
+        .map(|s| s.to_string())
+        .collect::<Vec<_>>();
     static ref ROUND_ROBIN_IPS: RwLock<Cycle<IntoIter<String>>> =
         RwLock::new(IP_VECTOR.clone().into_iter().cycle());
     static ref QUEUE_MAPPING: RwLock<HashMap<String, String>> = RwLock::new(HashMap::new());

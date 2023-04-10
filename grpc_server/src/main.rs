@@ -1,16 +1,17 @@
-use lazy_static::lazy_static;
-use protomom::crud_server::{Crud, CrudServer};
 use protomom::{
-    CreateReply, CreateRequest, DeleteReply, DeleteRequest, GetReply, GetRequest, PutReply,
+    crud_server::{Crud, CrudServer}, CreateReply, CreateRequest, DeleteReply, DeleteRequest, GetReply, GetRequest, PutReply,
     PutRequest, ReadReply, ReadRequest,
 };
-use std::collections::HashMap;
-use std::sync::RwLock;
-use tonic::transport::Server;
-use tonic::{Request, Response, Status};
-
+use std::{
+    collections::HashMap, sync::RwLock, 
+};
+use tonic::{
+    transport::Server, Request, Response, Status,
+};
+use lazy_static::lazy_static;
 mod queue;
 use queue::Queue;
+
 pub mod protomom {
     tonic::include_proto!("protomom");
 }
