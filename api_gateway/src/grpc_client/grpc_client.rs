@@ -51,7 +51,6 @@ pub async fn grpc_create(req_name: String, req_user: String, req_password: Strin
         .await
         .expect("Error receiving a response from server")
         .into_inner();
-    println!("req name: {} ip: {}", req_name.clone(), server_ip.clone());
     if response.status {
         QUEUE_MAPPING
             .write()
@@ -66,7 +65,7 @@ pub async fn grpc_read(req_id: String) -> String {
         .read()
         .expect("Error accesing server ips")
         .get(&req_id)
-        .expect("Error getting server ip")
+        .unwrap_or(&"http://[::1]:50051".to_string())
         .clone();
     let mut client = CrudClient::connect(mom_ip)
         .await
