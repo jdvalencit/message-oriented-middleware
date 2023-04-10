@@ -6,12 +6,28 @@ service Crud {
     rpc ReadQueue (ReadRequest) returns (ReadReply);
     rpc DeleteQueue (DeleteRequest) returns (DeleteReply);
     rpc PutQueue (PutRequest) returns (PutReply);
-    rpc GetQueue (GetRequest) returns (GetReply);
+    rpc GetQueues (GetRequest) returns (GetReply);
+}
+
+service User{
+    rpc CreateUser (CreateUserRequest) returns (CreateUserReply);
+}
+
+//User
+message CreateUserRequest {
+    string user = 1;
+    string password = 2;
+}
+
+message CreateUserReply {
+    string message = 1;
 }
 
 //Crud
 message CreateRequest {
-   string name = 1;
+    string id = 1;
+    string user = 2;
+    string password = 3;
 }
 
 message CreateReply {
@@ -29,6 +45,8 @@ message ReadReply {
 
 message DeleteRequest {
    string id = 1;
+   string user = 2;
+   string password = 3;
 }
 
 message DeleteReply {
@@ -47,9 +65,7 @@ message PutReply {
     string message = 1;
 }
 
-message GetRequest {
-    string id = 1;
-}
+message GetRequest {}
 
 message GetReply {
     string message = 1;
