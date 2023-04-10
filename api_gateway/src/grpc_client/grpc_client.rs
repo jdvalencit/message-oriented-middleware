@@ -185,18 +185,24 @@ pub async fn grpc_get() -> String {
 }
 
 async fn get(mom_ip: String) -> String {
-    let mut client = CrudClient::connect(mom_ip.clone())
-        .await
-        .expect("Error connecting client");
-    let request = tonic::Request::new(GetRequest {});
+    match CrudClient::connect(mom_ip.clone()).await {
+        Ok(mut client) => {
+            let request = tonic::Request::new(GetRequest {});
+            // Returns response from server
+            return client
+                .get_queues(request)
+                .await
+                .expect("Error receiving a response from server")
+                .into_inner()
+                .message;
+        }
+        Err(_) => {
+            let empty_string = "";
 
-    // Returns response from server
-    client
-        .get_queues(request)
-        .await
-        .expect("Error receiving a response from server")
-        .into_inner()
-        .message
+            // Returns empty response
+            return empty_string.to_string();
+        }
+    }
 }
 
 pub async fn grpc_create_user(req_user: String, req_password: String) -> String {
