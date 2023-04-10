@@ -1,5 +1,6 @@
 use protomom::{
     crud_server::{Crud, CrudServer}, CreateReply, CreateRequest, DeleteReply, DeleteRequest, GetReply, GetRequest, PutReply,
+    user_server::{User, UserServer}, CreateUserReply, CreateUserRequest,
     PutRequest, ReadReply, ReadRequest,
 };
 use std::{
@@ -38,23 +39,23 @@ impl Crud for CrudServicer {
     ) -> Result<Response<CreateReply>, Status> {
         println!("Request from client: {:?}", request);
 
-        let name = request.into_inner().name;
+        let id = request.into_inner().id;
         let mut local_queues_ref = LOCAL_QUEUES.write().expect("Error accesing local queues");
 
-        if local_queues_ref.contains_key(&name) {
+        if local_queues_ref.contains_key(&id) {
             let reply = protomom::CreateReply {
-                message: format!("Error queue: {} was already created.", name),
+                message: format!("Error queue: {} was already created.", id),
                 status: false,
             };
             return Ok(Response::new(reply));
         }
         local_queues_ref.insert(
-            name.clone(),
+            id.clone(),
             Queue::new("user1".to_string(), "key1".to_string()),
         );
 
         let reply = protomom::CreateReply {
-            message: format!("Queue: {} was created.", name),
+            message: format!("Queue: {} was created.", id),
             status: true,
         };
 
@@ -138,13 +139,32 @@ impl Crud for CrudServicer {
         Ok(Response::new(reply))
     }
 
-    async fn get_queue(&self, request: Request<GetRequest>) -> Result<Response<GetReply>, Status> {
+    async fn get_queues(&self, request: Request<GetRequest>) -> Result<Response<GetReply>, Status> {
         println!("Request from client: {:?}", request);
 
         let local_queues_ref = LOCAL_QUEUES.read().expect("Error accesing local queues");
         let queues = local_queues_ref.values();
         let reply = protomom::GetReply {
             message: format!("{:?}", queues),
+        };
+
+        Ok(Response::new(reply))
+    }
+}
+
+pub struct UserServicer {}
+
+#[tonic::async_trait]
+impl User for UserServicer {
+    async fn create_user(&self, request: Request<CreateUserRequest>) -> Result<Response<CreateUserReply>, Status> {
+        println!("Request from client: {:?}", request);
+        
+        // let id = Uuid::new_v4();
+        // let users = insert_user(id, "Tomas".to_string(), "password".to_string()).await?;
+        let response = "Sucess";
+
+        let reply = protomom::CreateUserReply  {
+            message: format!("{:?}", response),
         };
 
         Ok(Response::new(reply))
@@ -158,8 +178,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let addr = "[::1]:50051".parse()?;
     let crud_servicer = CrudServicer::default();
 
-    // let id = Uuid::new_v4();
-    // let users = insert_user(id, "Tomas".to_string(), "password".to_string()).await?;
 
     Server::builder()
         .add_service(CrudServer::new(crud_servicer))
