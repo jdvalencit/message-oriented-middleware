@@ -119,8 +119,9 @@ pub async fn grpc_put(req_id: String, cont: String) -> String {
         .read()
         .expect("Error accesing server ips")
         .get(&req_id)
-        .expect("Error getting server ip")
+        .unwrap_or(&"http://[::1]:50051".to_string())
         .clone();
+    
     let mut client = CrudClient::connect(mom_ip)
         .await
         .expect("Error conecting client");
