@@ -1,16 +1,14 @@
 # Diseño e Implementación de un Middleware que Implemente un Servicio de Mensajería Asincrónica entre Aplicaciones
-### info de la materia: ST0263
 #
+### info de la materia: ST0263
 ### Estudiante(s): 
 -  Juan David Valencia Torres, jdvalencit@eafit.edu.co; 
 -  Tomas Atehortua Ceferino, tatehortuc@eafit.edu.co; 
 -  Daniel Arango Hoyos, darangoh@eafit.edu.co
-#
 ### Profesor: Edwin Nelson Montoya Munera, emontoya@eafit.edu.co
 #
-#
 # 1. breve descripción de la actividad
-#
+
 El objetivo de este proyecto es el desarrollo de un Message-Oriented Middleware (MOM) utilizando el lenguaje de programación Rust, el cual sirve como middleware para el intercambio de mensajes de manera asíncrona entre un conjunto de clientes o servidores. Esto con el objetivo de experimentar con características clave de los sistemas distribuidos (como heterogeneidad, transparencia, seguridad y escalabilidad) que son necesarias para las aplicaciones y los subsistemas base.
 
 Además, se creó un cliente que permite a los usuarios del MOM utilizar las funcionalidades con un buen nivel de abstracción. Este cliente realiza peticiones a una API desarrollada, la cual se comunica con el Message-Oriented Middleware a través de comunicación por gRPC, lo que permite una comunicación rápida y eficiente entre el cliente, la API y el MOM. Esto también facilita la integración de otros servicios en el servidor.
