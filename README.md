@@ -43,6 +43,9 @@ Además, se creó un cliente que permite a los usuarios del MOM utilizar las fun
 
 # 2. información general de diseño de alto nivel, arquitectura, patrones, mejores prácticas utilizadas.
 
+![WhatsApp Image 2023-04-10 at 7 56 42 PM](https://user-images.githubusercontent.com/61467004/231029144-a80a0272-1dd8-431d-83a6-3d2260cc7b97.jpeg)
+ 
+
 
 # 3. Descripción del ambiente de desarrollo y técnico: lenguaje de programación, librerias, paquetes, etc, con sus numeros de versiones.
 
