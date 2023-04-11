@@ -1,13 +1,13 @@
-# info de la materia: ST0263
+# Diseño e Implementación de un Middleware que Implemente un Servicio de Mensajería Asincrónica entre Aplicaciones
+### info de la materia: ST0263
 #
-# Estudiante(s): 
+### Estudiante(s): 
 -  Juan David Valencia Torres, jdvalencit@eafit.edu.co; 
 -  Tomas Atehortua Ceferino, tatehortuc@eafit.edu.co; 
 -  Daniel Arango Hoyos, darangoh@eafit.edu.co
 #
-# Profesor: Edwin Nelson Montoya Munera, emontoya@eafit.edu.co
+### Profesor: Edwin Nelson Montoya Munera, emontoya@eafit.edu.co
 #
-# Diseño e Implementación de un Middleware que Implemente un Servicio de Mensajería Asincrónica entre Aplicaciones
 #
 # 1. breve descripción de la actividad
 #
