@@ -88,11 +88,20 @@ impl Crud for CrudServicer {
         println!("Request from client: {:?}", request);
         let id = request.into_inner().id;
 
-        let local_queues_ref = LOCAL_QUEUES.read().expect("Error accesing local queues");
+        let mut local_queues_ref = LOCAL_QUEUES.write().expect("Error accesing local queues");
 
-        if let Some(queue) = local_queues_ref.get(&id) {
+        if let Some(queue) = local_queues_ref.get_mut(&id) {
+
+            if queue.queue_data.is_empty(){
+                let reply = protomom::ReadReply {
+                    message: format!("Queue: {} is empty.", id),
+                };
+
+                return Ok(Response::new(reply))
+            }
+
             let reply = protomom::ReadReply {
-                message: format!("Queue: {} contains: \n{:?}.", id, queue),
+                message: format!("Queue: {} contains: \n{:?}.", id, queue.queue_data.pop().unwrap()),
             };
 
             return Ok(Response::new(reply));
