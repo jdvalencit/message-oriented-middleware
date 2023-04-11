@@ -11,25 +11,36 @@
 #
 # 1. breve descripción de la actividad
 #
-El objetivo de este proyecto es crear un middleware orientado a mensajes (MOM) para permitir que los clientes envíen y reciban mensajes. Esto con el objetivo de experimentar con características clave de los sistemas distribuidos (como heterogeneidad, transparencia, seguridad y escalabilidad) que son necesarias para las aplicaciones y los subsistemas base. El MOM se diseñará e implementará para manejar la complejidad y características del sistema distribuido, de modo que los clientes puedan usarlo de forma segura y transparente.
+El objetivo de este proyecto es el desarrollo de un Message-Oriented Middleware (MOM) utilizando el lenguaje de programación Rust, el cual sirve como middleware para el intercambio de mensajes de manera asíncrona entre un conjunto de clientes o servidores. Esto con el objetivo de experimentar con características clave de los sistemas distribuidos (como heterogeneidad, transparencia, seguridad y escalabilidad) que son necesarias para las aplicaciones y los subsistemas base.
+
+Además, se creó un cliente que permite a los usuarios del MOM utilizar las funcionalidades con un buen nivel de abstracción. Este cliente realiza peticiones a una API desarrollada, la cual se comunica con el Message-Oriented Middleware a través de comunicación por gRPC, lo que permite una comunicación rápida y eficiente entre el cliente, la API y el MOM. Esto también facilita la integración de otros servicios en el servidor.
+
 ## 1.1. Que aspectos cumplió o desarrolló de la actividad propuesta por el profesor (requerimientos funcionales y no funcionales)
 
 - Conexión y desconexión al servidor: El MOM fue diseñado e implementado para permitir que los clientes se conecten y desconecten al servidor. Esto se puede hacer tanto en modo con estado como sin estado, lo que significa que el MOM puede mantener la conexión de manera persistente o no.
 
-- Ciclo de vida de tópicos: El MOM permite la creación, eliminación y listado de tópicos. Los tópicos son canales con nombres únicos que los clientes pueden utilizar para enviar y recibir mensajes relacionados con un tema en particular.
-
-- Ciclo de vida de colas: El MOM permite la creación, eliminación y listado de colas. Las colas son estructuras de datos que permiten que los clientes envíen y reciban mensajes en orden.
-
-- Envío de un mensaje a un tópico: El MOM permite que los clientes envíen mensajes a un tópico en particular. Cuando un cliente envía un mensaje a un tópico, todos los demás clientes suscritos al mismo tópico pueden recibir el mensaje.
+- Ciclo de vida de colas: El MOM permite la creación, eliminación y listado de colas. Las colas permiten que los clientes envíen y reciban mensajes en orden.
 
 - Envío de un mensaje a una cola: El MOM permite que los clientes envíen mensajes a una cola en particular. Los mensajes se agregan a la cola en el orden en que se reciben.
 
-- Recepción de un mensaje de un tópico: El MOM permite que los clientes reciban mensajes de un tópico en particular. Cuando un mensaje se envía a un tópico, todos los clientes suscritos al mismo tópico pueden recibir el mensaje.
-
 - Recepción de un mensaje de una cola: El MOM permite que los clientes reciban mensajes de una cola en particular. Los mensajes se entregan a los clientes en el orden en que se agregaron a la cola.
+
+- La conexión y desconexión al servidor debe ser con usuarios autenticados. El MOM requiere que los clientes se autentiquen antes de establecer una conexión y enviar o recibir mensajes. Esto garantiza la seguridad y la privacidad de los datos transmitidos.
+
+- Solo se puede borrar colas creados por el usuario que los creó. El MOM implementa un control de acceso que asegura que solo los usuarios autorizados puedan borrar canales o cola
+
+- Todos los servicios son expuestos como un API REST hacia los clientes. El MOM implementa una API RESTful que los clientes pueden utilizar para interactuar con los servicios del MOM.
+
+- El mecanismo de recepción de mensajes en modo pull está definido. El MOM implementa una funcionalidad de recepción de mensajes en modo pull, que permite a los clientes obtener mensajes de las colas en función de sus necesidades.
+
+- Se aplica un concepto de particionamiento. El MOM utiliza un particionamiento de tipo horizontal para distribuir las colas en diferentes servidores, lo que permite mejorar la escalabilidad y la disponibilidad del sistema.
 
 
 ## 1.2. Que aspectos NO cumplió o desarrolló de la actividad propuesta por el profesor (requerimientos funcionales y no funcionales)
+
+- Implementación de tópicos.
+
+- Tolerancia a fallos.
 
 # 2. información general de diseño de alto nivel, arquitectura, patrones, mejores prácticas utilizadas.
 
