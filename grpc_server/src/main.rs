@@ -47,7 +47,6 @@ impl Crud for CrudServicer {
                     };
                     return Ok(Response::new(reply));
                 }
-                println!("Current user: {:?}",users);
             }
             Err(_) => {
                 let reply = protomom::CreateReply {
@@ -131,7 +130,6 @@ impl Crud for CrudServicer {
                     };
                     return Ok(Response::new(reply));
                 }
-                println!("Current user: {:?}",users);
             }
             Err(_) => {
                 let reply = protomom::DeleteReply {
