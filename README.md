@@ -45,19 +45,49 @@ Además, se creó un cliente que permite a los usuarios del MOM utilizar las fun
 
 ![WhatsApp Image 2023-04-10 at 7 56 42 PM](https://user-images.githubusercontent.com/61467004/231029144-a80a0272-1dd8-431d-83a6-3d2260cc7b97.jpeg)
  
+La estructura del proyecto se divide en tres partes principales: cliente, API y la capa del MOM que contiene la base de datos. El objetivo del cliente y la API es actuar como intermediarios para proporcionar una capa de abstracción y permitir la escalabilidad del sistema en el futuro. La comunicación entre el cliente y la API se realiza mediante REST, mientras que la comunicación entre la API y el MOM se establece a través de gRPC. Esta arquitectura permite una comunicación eficiente y un intercambio de datos rápido y seguro entre las diferentes partes del sistema.
 
+La capa del MOM se desarrolló teniendo en cuenta el concepto de particionamiento, esto con el fin de permitir una mejor disponibilidad y escalabilidad del sistema.
 
 # 3. Descripción del ambiente de desarrollo y técnico: lenguaje de programación, librerias, paquetes, etc, con sus numeros de versiones.
 
 ## como se compila y ejecuta.
+Para compilar y ejecutar el proyecto primero es necesario instalar lo siguiente:
+```
+sudo apt-get update
+sudo apt install build-essential
+sudo apt install docker.io
+sudo apt install docker-compose
+sudo apt-get install protobuf-compiler
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+cargo install sqlx-cli --no-default-features --features rustls,postgres
+```
+Luego, diríjase a la carpeta api_gateway y ejecute lo siguiente:
+```
+cargo build
+cargo run
+```
+Con esto descargará las dependencias necesarias para ejecutar la api gateway y también la pondrá en ejecución.
+Luego diríjase a la carpeta docker para poder correr la base de datos con el siguiente comando:
+```
+sudo ./service.sh up
+```
+Con todo esto corriendo, diríjase hacia la carpeta grpc_server y escriba el siguiente comando:
+```
+sqlx migrate run
+```
+Ya con esto tendrá el proyecto funcionando.
 
 ## detalles del desarrollo.
+El desarrollo del proyecto se llevó a cabo de manera ágil, en donde cada integrante se especializó en una capa del proyecto. A pesar de esta especialización, todos los miembros participaron activamente en el desarrollo de cada una de las capas y contribuyeron al excelente resultado obtenido al final. La división de trabajo permitió una mejor organización y eficiencia en el desarrollo del proyecto.
 
 ## detalles técnicos
-
 ## descripción y como se configura los parámetros del proyecto (ej: ip, puertos, conexión a bases de datos, variables de ambiente, parámetros, etc)
 
-## opcional - detalles de la organización del código por carpetas o descripción de algún archivo. (ESTRUCTURA DE DIRECTORIOS Y ARCHIVOS IMPORTANTE DEL PROYECTO, comando 'tree' de linux)
+## detalles de la organización del código por carpetas o descripción de algún archivo.
+```
+
+```
 
 
 ## 
