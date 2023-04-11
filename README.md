@@ -145,11 +145,30 @@ Además, la aplicación utiliza el framework web Rocket en su versión 0.5.0-rc.
 
 
 ## una mini guia de como un usuario utilizaría el software o la aplicación.
+El uso del sistema se puede comprobar mediante *métodos HTTP* para realizarle peticiones a la base de datos a través de un *Browser* o también se puede a través de una consola mediante la herramienta *curl*.
+La siguiente guía será para la herramienta *curl*
+Para poder realizar el registro del usuario, este deberá hacerlo mediante la petición:
+```curl -X POST --user user:password 127.0.0.1:8000/register-user```
 
+Una vez registrado, el usuario podrá crear colas:
+```curl -X POST --user user:password 127.0.0.1:8000/crud/create-queue/<queuename>```
 
+añadir contenido a la cola:
+```curl -X PUT 127.0.0.1:8000/queue/put/<queuename> -H "Content-Type: text/html" -d "This is a new content"```
+
+Consultar el contenido de la cola:
+```curl 127.0.0.1:8000/crud/read-queue/<queuename>```
+
+Y eliminar la cola:
+```curl -X DELETE --user user:password 127.0.0.1:8000/crud/delete-queue/<queuename>```
 
 # 5. otra información que considere relevante para esta actividad.
 
 # referencias:
+
+- https://www.rust-lang.org/es
+- https://www.rincondelvago.com/
+- https://chat.openai.com/
+- https://www.youtube.com/
 
 #### versión README.md -> 1.0 (2022-agosto)
