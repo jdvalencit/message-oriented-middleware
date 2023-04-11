@@ -136,7 +136,26 @@ Con el cuál se puede configurar la IP y el puerto que conecta con la base de da
 ## 
 ## opcionalmente - si quiere mostrar resultados o pantallazos 
 
-# 4. Descripción del ambiente de EJECUCIÓN (en producción) lenguaje de programación, librerias, paquetes, etc, con sus numeros de versiones.
+![imagen](https://user-images.githubusercontent.com/61467004/231059008-e2d88869-3019-44e1-8a44-3736412633ae.png)
+Create
+
+![imagen](https://user-images.githubusercontent.com/61467004/231059036-7cdc22a0-c4bc-49ce-9395-7c846ae0d74e.png)
+Página principal
+
+![imagen](https://user-images.githubusercontent.com/61467004/231059192-aba7ed84-fbb8-441b-8a29-84bc8b8267ac.png)
+Tablas
+
+![imagen](https://user-images.githubusercontent.com/61467004/231059741-7c99be7c-15d4-4112-afd9-b7ce115989e7.png)
+Put
+
+![imagen](https://user-images.githubusercontent.com/61467004/231060042-c2af5e0d-b2ed-423f-8a62-69d09bb193f2.png)
+GetAllQueues
+
+![imagen](https://user-images.githubusercontent.com/61467004/231060076-c921ce38-8249-46c5-9e43-07360f0f97fc.png)
+Read
+
+
+# 4. Descripción del ambiente de EJECUCIÓN.
 La aplicación se ejecuta en un ambiente de producción con el lenguaje de programación Rustc versión 1.68.2. Las librerías necesarias para el correcto funcionamiento de la aplicación se encuentran especificadas en el archivo "Cargo.toml" y se instalan mediante el manejador de paquetes de Rust, Cargo.
 
 Además, la aplicación utiliza el framework web Rocket en su versión 0.5.0-rc.2, que proporciona una solución elegante y eficiente para el manejo de solicitudes y respuestas HTTP, así como la gestión de las rutas y la serialización de los datos. Otras librerías y paquetes que se utilizan en la aplicación incluyen grpc, que se utiliza para la comunicación entre los diferentes componentes de la aplicación, también se utiliza PostgreSQL como base de datos y varias bibliotecas de manejo de bases de datos para la persistencia de los datos. Todas las versiones específicas de estas librerías y paquetes están especificadas en el archivo "Cargo.toml".
