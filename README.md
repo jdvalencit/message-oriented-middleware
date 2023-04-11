@@ -143,6 +143,7 @@ Además, la aplicación utiliza el framework web Rocket en su versión 0.5.0-rc.
 
 # IP o nombres de dominio en nube o en la máquina servidor.
 
+http://54.167.95.7:8000/
 
 ## una mini guia de como un usuario utilizaría el software o la aplicación.
 El uso del sistema se puede comprobar mediante *métodos HTTP* para realizarle peticiones a la base de datos a través de un *Browser* o también se puede a través de una consola mediante la herramienta *curl*.
