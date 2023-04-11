@@ -5,7 +5,8 @@
 -  Juan David Valencia Torres, jdvalencit@eafit.edu.co; 
 -  Tomas Atehortua Ceferino, tatehortuc@eafit.edu.co; 
 -  Daniel Arango Hoyos, darangoh@eafit.edu.co
-### Profesor: Edwin Nelson Montoya Munera, emontoya@eafit.edu.co
+### Profesor: 
+-  Edwin Nelson Montoya Munera, emontoya@eafit.edu.co
 #
 # 1. breve descripción de la actividad
 
