@@ -98,7 +98,7 @@ impl Crud for CrudServicer {
                 message: format!(
                     "Queue: {} contains: \n{:?}.",
                     id,
-                    queue.queue_data.pop().unwrap()
+                    queue.queue_data.remove(0)
                 ),
             };
 
