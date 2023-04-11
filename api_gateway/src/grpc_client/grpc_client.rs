@@ -61,11 +61,12 @@ pub async fn grpc_create(req_name: String, req_user: String, req_password: Strin
 }
 
 pub async fn grpc_read(req_id: String) -> String {
+    let backup_ip = env::var("BACKUP_IP").expect("Backup ip failed to load");
     let mom_ip = QUEUE_MAPPING
         .read()
         .expect("Error accesing server ips")
         .get(&req_id)
-        .unwrap_or(&"http://[::1]:50051".to_string())
+        .unwrap_or(&backup_ip)
         .clone();
     let mut client = CrudClient::connect(mom_ip)
         .await
@@ -82,11 +83,12 @@ pub async fn grpc_read(req_id: String) -> String {
 }
 
 pub async fn grpc_delete(req_id: String, req_user: String, req_password: String) -> String {
+    let backup_ip = env::var("BACKUP_IP").expect("Backup ip failed to load");
     let mom_ip = QUEUE_MAPPING
         .read()
         .expect("Error accesing server ips")
         .get(&req_id)
-        .unwrap_or(&"http://[::1]:50051".to_string())
+        .unwrap_or(&backup_ip)
         .clone();
     let mut client = CrudClient::connect(mom_ip)
         .await
@@ -114,13 +116,14 @@ pub async fn grpc_delete(req_id: String, req_user: String, req_password: String)
 }
 
 pub async fn grpc_put(req_id: String, cont: String) -> String {
+    let backup_ip = env::var("BACKUP_IP").expect("Backup ip failed to load");
     let mom_ip = QUEUE_MAPPING
         .read()
         .expect("Error accesing server ips")
         .get(&req_id)
-        .unwrap_or(&"http://[::1]:50051".to_string())
+        .unwrap_or(&backup_ip)
         .clone();
-    
+
     let mut client = CrudClient::connect(mom_ip)
         .await
         .expect("Error conecting client");
@@ -166,7 +169,8 @@ async fn get(mom_ip: String) -> String {
 }
 
 pub async fn grpc_create_user(req_user: String, req_password: String) -> String {
-    let mut client = UserClient::connect("http://[::1]:50051".to_string())
+    let default_ip = env::var("BACKUP_IP").expect("Backup ip failed to load");
+    let mut client = UserClient::connect(default_ip)
         .await
         .expect("Error connecting client");
     let request = tonic::Request::new(CreateUserRequest {

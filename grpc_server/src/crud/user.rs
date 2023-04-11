@@ -8,9 +8,7 @@ pub struct User {
     pub password: String,
 }
 
-impl User {
-    
-}
+impl User {}
 
 pub async fn insert_user(id: Uuid, username: String, password: String) -> Result<(), sqlx::Error> {
     let pool = establish_connection().await?;
@@ -24,7 +22,6 @@ pub async fn insert_user(id: Uuid, username: String, password: String) -> Result
     .execute(&pool)
     .await?;
 
-
     Ok(())
 }
 
@@ -35,7 +32,9 @@ pub async fn get_user(username: String, password: String) -> Result<Vec<User>, s
         "select * from users where username = $1 and password = $2",
         username,
         password
-    ).fetch_all(&pool).await?;
+    )
+    .fetch_all(&pool)
+    .await?;
 
     Ok(users)
 }

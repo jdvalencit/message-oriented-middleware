@@ -40,7 +40,7 @@ impl Crud for CrudServicer {
 
         match get_user(req.user.clone(), req.password).await {
             Ok(users) => {
-                if users.is_empty(){
+                if users.is_empty() {
                     let reply = protomom::CreateReply {
                         message: format!("Error validating user {}", req.user),
                         status: false,
@@ -54,7 +54,6 @@ impl Crud for CrudServicer {
                     status: false,
                 };
                 return Ok(Response::new(reply));
-
             }
         }
 
@@ -67,10 +66,7 @@ impl Crud for CrudServicer {
             };
             return Ok(Response::new(reply));
         }
-        local_queues_ref.insert(
-            req.id.clone(),
-            Queue::new(req.user, req.id.clone()),
-        );
+        local_queues_ref.insert(req.id.clone(), Queue::new(req.user, req.id.clone()));
 
         let reply = protomom::CreateReply {
             message: format!("Queue: {} was created.", req.id),
@@ -90,17 +86,20 @@ impl Crud for CrudServicer {
         let mut local_queues_ref = LOCAL_QUEUES.write().expect("Error accesing local queues");
 
         if let Some(queue) = local_queues_ref.get_mut(&id) {
-
-            if queue.queue_data.is_empty(){
+            if queue.queue_data.is_empty() {
                 let reply = protomom::ReadReply {
                     message: format!("Queue: {} is empty.", id),
                 };
 
-                return Ok(Response::new(reply))
+                return Ok(Response::new(reply));
             }
 
             let reply = protomom::ReadReply {
-                message: format!("Queue: {} contains: \n{:?}.", id, queue.queue_data.pop().unwrap()),
+                message: format!(
+                    "Queue: {} contains: \n{:?}.",
+                    id,
+                    queue.queue_data.pop().unwrap()
+                ),
             };
 
             return Ok(Response::new(reply));
@@ -123,7 +122,7 @@ impl Crud for CrudServicer {
 
         match get_user(req.user.clone(), req.password).await {
             Ok(users) => {
-                if users.is_empty(){
+                if users.is_empty() {
                     let reply = protomom::DeleteReply {
                         message: format!("Error validating user {}", req.user),
                         status: false,
@@ -137,13 +136,12 @@ impl Crud for CrudServicer {
                     status: false,
                 };
                 return Ok(Response::new(reply));
-
             }
         }
 
         let mut local_queues_ref = LOCAL_QUEUES.write().expect("Error accesing local queues");
 
-        if let Some(queue) = local_queues_ref.get(&req.id){
+        if let Some(queue) = local_queues_ref.get(&req.id) {
             if queue.user_id != req.user {
                 let reply = protomom::DeleteReply {
                     message: format!("Queue: {} not available for user {}.", req.id, req.user),
@@ -160,7 +158,6 @@ impl Crud for CrudServicer {
 
                 return Ok(Response::new(reply));
             }
-
         }
 
         let reply = protomom::DeleteReply {
@@ -216,7 +213,7 @@ impl User for UserServicer {
         request: Request<CreateUserRequest>,
     ) -> Result<Response<CreateUserReply>, Status> {
         println!("Request from client: {:?}", request);
-        
+
         let req = request.into_inner();
 
         let req_user = req.user.clone();

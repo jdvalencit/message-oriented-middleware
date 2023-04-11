@@ -1,4 +1,4 @@
-use sqlx::postgres::{PgPoolOptions};
+use sqlx::postgres::PgPoolOptions;
 use sqlx::{Pool, Postgres};
 use std::env::var;
 
@@ -9,7 +9,8 @@ pub async fn establish_connection() -> Result<Pool<Postgres>, sqlx::Error> {
     let pool = PgPoolOptions::new()
         .max_connections(5)
         .connect(&db_url)
-        .await.expect("Unable to connect to Postgres");
+        .await
+        .expect("Unable to connect to Postgres");
 
     Ok(pool)
 }
