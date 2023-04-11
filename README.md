@@ -83,9 +83,52 @@ El desarrollo del proyecto se llevó a cabo de manera ágil, en donde cada integ
 
 ## detalles técnicos
 ## descripción y como se configura los parámetros del proyecto (ej: ip, puertos, conexión a bases de datos, variables de ambiente, parámetros, etc)
+Para configurar los valores con los que se va a ejecutar el proyecto se utiliza un archivo de configuración .env para cada capa en la cual se especifican las direcciones o puertos dependiendo de en cuál capa se encuentre el lector. Por ejemplo, el grpc_server se utiliza para comunicar el MOM con la base de datos contiene el siguiente archivo .env:
+```
+DB_USER=postgres
+DB_NAME=momdb
+DB_HOST="127.0.0.1"
+DB_PORT=5432
+DB_PASS=secret
+
+DATABASE_URL="postgresql://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}/${DB_NAME}"
+```
+Con el cuál se puede configurar la IP y el puerto que conecta con la base de datos.
 
 ## detalles de la organización del código por carpetas o descripción de algún archivo.
 ```
+└── message-oriented-middleware
+    ├── api_gateway
+    │   ├── build.rs
+    │   ├── Cargo.toml
+    │   ├── Rocket.toml
+    │   └── src
+    │       ├── grpc_client
+    │       │   ├── grpc_client.rs
+    │       │   └── mod.rs
+    │       ├── lib.rs
+    │       └── main.rs
+    ├── docker
+    │   ├── bash.sh
+    │   ├── docker-compose.yml
+    │   └── service.sh
+    ├── grpc_server
+    │   ├── build.rs
+    │   ├── build-sql.sh
+    │   ├── Cargo.toml
+    │   ├── migrations
+    │   │   └── 20230410030209_user_table.sql
+    │   └── src
+    │       ├── crud
+    │       │   ├── connection.rs
+    │       │   ├── mod.rs
+    │       │   └── user.rs
+    │       ├── lib.rs
+    │       ├── main.rs
+    │       └── queue.rs
+    ├── protos
+    │   └── protomom.proto
+    └── README.md
 
 ```
 
@@ -94,12 +137,15 @@ El desarrollo del proyecto se llevó a cabo de manera ágil, en donde cada integ
 ## opcionalmente - si quiere mostrar resultados o pantallazos 
 
 # 4. Descripción del ambiente de EJECUCIÓN (en producción) lenguaje de programación, librerias, paquetes, etc, con sus numeros de versiones.
+La aplicación se ejecuta en un ambiente de producción con el lenguaje de programación Rustc versión 1.68.2. Las librerías necesarias para el correcto funcionamiento de la aplicación se encuentran especificadas en el archivo "Cargo.toml" y se instalan mediante el manejador de paquetes de Rust, Cargo.
 
+Además, la aplicación utiliza el framework web Rocket en su versión 0.5.0-rc.2, que proporciona una solución elegante y eficiente para el manejo de solicitudes y respuestas HTTP, así como la gestión de las rutas y la serialización de los datos. Otras librerías y paquetes que se utilizan en la aplicación incluyen grpc, que se utiliza para la comunicación entre los diferentes componentes de la aplicación, también se utiliza PostgreSQL como base de datos y varias bibliotecas de manejo de bases de datos para la persistencia de los datos. Todas las versiones específicas de estas librerías y paquetes están especificadas en el archivo "Cargo.toml".
 
 # IP o nombres de dominio en nube o en la máquina servidor.
 
 
-## una mini guia de como un usuario utilizaría el software o la aplicación
+## una mini guia de como un usuario utilizaría el software o la aplicación.
+
 
 
 # 5. otra información que considere relevante para esta actividad.
