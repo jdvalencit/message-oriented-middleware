@@ -145,7 +145,7 @@ impl Crud for CrudServicer {
             if queue.user_id != req.user {
                 let reply = protomom::DeleteReply {
                     message: format!("Queue: {} not available for user {}.", req.id, req.user),
-                    status: true,
+                    status: false,
                 };
 
                 return Ok(Response::new(reply));
